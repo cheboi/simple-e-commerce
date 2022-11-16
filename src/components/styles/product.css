@@ -1,0 +1,19 @@
+section {
+  padding-top: 60px;
+  align-items: center;
+  text-align: center;
+}
+article {
+    border-width: 5px;
+    border-color: aqua;
+  padding-left: 100px;
+  width: 30vw;
+  height: 300px;
+}
+article img.card-img {
+  height: 150px;
+  width: 150px;
+}
+.description {
+  width: 100%;
+}
