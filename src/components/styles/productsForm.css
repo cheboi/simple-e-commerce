@@ -1,0 +1,86 @@
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Economica", "Arial", sans-serif;
+  font-size: 18px;
+  background: deepskyblue;
+}
+#productDesription {
+  padding-top: 10px;
+  align-items: center;
+  text-align: center;
+}
+.form-control {
+  position: relative;
+  width: 80%;
+  max-width: 450px;
+  margin: 0 auto;
+}
+form {
+  position: relative;
+  width: 100%;
+  margin: 50px auto;
+  padding: 50px;
+  background: white;
+  text-align: center;
+  height: 60%;
+}
+.add-btn {
+  background-color: #3f802e;
+  padding: 10px 15px;
+  border-radius: 3px;
+  text-decoration: none;
+  color: #fff;
+}
+
+input {
+  display: inline-block;
+  width: 100%;
+  margin: 20px 0;
+  padding: 10px;
+  border: 2px dashed lightblue;
+  outline: none;
+  font-size: 20px;
+  font-family: "Economica", "Arial", sans-serif;
+  font-weight: 400;
+  transition: all 0.2s ease;
+}
+input:focus {
+  border-color: deepskyblue;
+}
+textarea {
+  width: 100%;
+  margin: 20px 0;
+  padding: 10px;
+  border: 2px dashed lightblue;
+  outline: none;
+  font: size 20px;
+  font-family: "Economica", "Arial", sans-serif;
+}
+@keyframes drawBorder {
+  from {
+    stroke-dasharray: 4000;
+    stroke-dashoffset: 4000;
+  }
+
+  to {
+    stroke-dasharray: 4000;
+    stroke-dashoffset: 0;
+  }
+}
+h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  font-size: 24px;
+  font-weight: 700;
+}
