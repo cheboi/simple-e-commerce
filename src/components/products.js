@@ -22,28 +22,37 @@ const Products = () => {
     if (productStatus === "idle") {
       dispatch(fetchProducts());
     }
-  }, []);
+  }, [products, dispatch]);
 
-  var arrayProduct = [];
-  arrayProduct.push(products);
+  // var arrayProduct = [];
+  // arrayProduct.push(product)
   let content;
-  console.log(arrayProduct);
+  // console.log(products);
 
   if (productStatus === "loading") {
     content = <p>Loading...</p>;
   } else if (productStatus === "succeeded") {
-    content = arrayProduct.map((product) => {
+    content = products.map((product) => {
       return (
         <article>
-          <img
-            src={product?.img_url}
-            className="card-img"
-            alt={product?.title}
-          />
-          <h3>{product?.title}</h3>
-          <p className="description">{product?.description}</p>
-          <p>{product?.price}</p>
-          <p>{product?.discount_rate}</p>
+          <div id="container">
+            <div className="product-details">
+              <h1>{product?.title}</h1>
+              <p className="description">{product?.description}</p>
+              <h5>{product?.discountRate}</h5>
+              <div className="control">
+                <button className="btn">
+                  <span className="price">Kes {product?.price}</span>
+                  <span className="cart">Add to Cart</span>
+                </button>
+              </div>
+            </div>
+            <img
+              src={product?.img_url}
+              className="card-img"
+              alt={product?.title}
+            />
+          </div>
         </article>
       );
     });

@@ -1,8 +1,6 @@
 import {
   createSlice,
-  createAsyncThunk,
-  createSelector,
-  createEntityAdapter,
+  createAsyncThunk
 } from "@reduxjs/toolkit";
 
 import axios from "axios";
@@ -14,12 +12,26 @@ const initialState = {
   error: null,
 };
 
-export const fetchProducts = createAsyncThunk("products/fetchProducts", async () => {
-  const response = await axios.get(URL);
-  return response.data;
-});
+export const fetchProducts = createAsyncThunk(
+  "products/fetchProducts",
+  async () => {
+    const response = await axios.get(URL);
+    let ourdata = [];
+    for (let key in response.data) {
+      ourdata.push({
+        image: response.data[key].image,
+        description: response.data[key].body,
+        price: response.data[key].price,
+        discountRate: response.data[key].discountRate,
+        title: response.data[key].title,
+      });
+    }
+    console.log(ourdata);
+    return ourdata;
+  }
+);
 
-export const addNewPost = createAsyncThunk(
+export const addNewProduct = createAsyncThunk(
   "products/addNewProduct",
   async (initialProduct) => {
     const response = await axios.post(URL, initialProduct);
@@ -69,7 +81,5 @@ export const { fetchProduct } = productSlice.actions;
 export const selectAllProducts = (state) => state.products.products;
 export const getProductsStatus = (state) => state.products.status;
 export const getProductsError = (state) => state.products.error;
-
-export const { addNewProduct } = productSlice.actions;
 
 export default productSlice.reducer;

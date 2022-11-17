@@ -94,7 +94,7 @@ function Login() {
             placeholder="Password"
             type="password"
           />
-          <button type="submit" onClick={loginToApp}>
+          <button className="login-btn" type="submit" onClick={loginToApp}>
             Sign In
           </button>
         </form>
