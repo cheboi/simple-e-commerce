@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Outlet, Link } from "react-router-dom";
 import { auth } from "../service/firebase";
 import { logout, selectUser } from "../features/userSlice";
+import { BsFillCartCheckFill } from "react-icons/bs";
 
 import "./styles/header.css";
 
@@ -26,7 +27,12 @@ function Header() {
               {user ? <button onClick={logoutOfApp}>Logout</button> : ""}
             </li>
             <li className="nav-list">
-              <Link to="/About">About US</Link>
+              <Link to="/cart">
+                <BsFillCartCheckFill />
+              </Link>
+            </li>
+            <li className="nav-list">
+              <Link to="/aboutus">About US</Link>
             </li>
             <li className="nav-list">
               <Link to="/contacts">Contact US</Link>

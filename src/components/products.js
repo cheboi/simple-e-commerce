@@ -10,6 +10,7 @@ import {
   getProductsError,
   fetchProducts,
 } from "../features/productSlice";
+import { addToCart } from "../features/cartSlice";
 
 const Products = () => {
   const dispatch = useDispatch();
@@ -23,6 +24,11 @@ const Products = () => {
       dispatch(fetchProducts());
     }
   }, [products, dispatch]);
+
+  const handleCartSubmit = (product) => {
+    dispatch(addToCart(product));
+    // history.push("/cart");
+  };
 
   // var arrayProduct = [];
   // arrayProduct.push(product)
@@ -43,13 +49,18 @@ const Products = () => {
               <div className="control">
                 <button className="btn">
                   <span className="price">Kes {product?.price}</span>
-                  <span className="cart">Add to Cart</span>
+                  <span
+                    className="cart"
+                    onClick={() => handleCartSubmit(product)}
+                  >
+                    Add to Cart
+                  </span>
                 </button>
               </div>
             </div>
             <img
-              src={product?.img_url}
-              className="card-img"
+              src={product?.image}
+              className="product-image"
               alt={product?.title}
             />
           </div>
