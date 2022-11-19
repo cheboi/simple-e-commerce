@@ -8,6 +8,7 @@ import "./styles/header.css";
 
 function Header() {
   const dispatch = useDispatch();
+  const { cartTotalQuantity } = useSelector((state) => state.cart);
 
   const logoutOfApp = () => {
     // dispatch to the store with the logout action
@@ -29,6 +30,9 @@ function Header() {
             <li className="nav-list">
               <Link to="/cart">
                 <BsFillCartCheckFill />
+                <span className="bag-quantity">
+                  <span>{cartTotalQuantity}</span>
+                </span>
               </Link>
             </li>
             <li className="nav-list">
