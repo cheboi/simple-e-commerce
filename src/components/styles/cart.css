@@ -20,8 +20,12 @@
   height: 30vh;
   width: 25vw;
 }
-.right-card{
-width: 60vw;
+.cart-quantity {
+  vertical-align: super;
+  font-size: medium;
+}
+.right-card {
+  width: 60vw;
 }
 .cart-product-quantity {
   display: flex;
