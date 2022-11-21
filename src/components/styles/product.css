@@ -1,38 +1,14 @@
-/* section {
-  padding-top: 60px;
-  align-items: center;
-  text-align: center;
-}
-article {
-  text-align: center;
-  border-width: 20px;
-  border-color: brown;
-  padding: 70px;
-  height: 70vh;
-  width: 70vw;
-  padding-left: 40px;
-  border-style: 5px;
-}
-article img.card-img {
-  height: 150px;
-  width: 150px;
-}
-.description {
-  width: 100%;
-} */
-
 #container {
   box-shadow: 0 15px 30px 1px grey;
   background: rgba(255, 255, 255, 0.9);
   text-align: center;
   border-radius: 5px;
   overflow: hidden;
-  margin: 5em auto;
-  height: 350px;
+  margin: 1em auto;
+  height: 250px auto;
   width: 700px;
 }
 .product-details {
-  position: relative;
   text-align: left;
   overflow: hidden;
   padding: 30px;
@@ -43,10 +19,8 @@ article img.card-img {
 .product-image {
   transition: all 0.3s ease-out;
   display: inline-block;
-  position: relative;
   overflow: hidden;
   height: 100%;
-  float: right;
   width: 45%;
   display: inline-block;
 }
@@ -55,7 +29,6 @@ article img.card-img {
   transition: 0.3s linear;
   background: #809fff;
   border-radius: 5px;
-  position: relative;
   overflow: hidden;
   cursor: pointer;
   outline: none;
@@ -70,13 +43,11 @@ article img.card-img {
 #container .product-details h1 {
   font-family: "Bebas Neue", cursive;
   display: inline-block;
-  position: relative;
   font-size: 30px;
   color: #344055;
   margin: 0;
 }
 #container .product-details h1:before {
-  position: absolute;
   content: "";
   right: 0%;
   top: 0%;
@@ -98,7 +69,6 @@ article img.card-img {
   color: #7d7d7d;
 }
 .control {
-  position: absolute;
   bottom: 20%;
   left: 22.8%;
 }

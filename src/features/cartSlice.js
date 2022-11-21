@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  cartItems: localStorage.getItem("cartItems")
-    ? JSON.parse(localStorage.getItem("cartItems"))
+  cartItems: sessionStorage.getItem("cartItems")
+    ? JSON.parse(sessionStorage.getItem("cartItems"))
     : [],
   cartQuantity: 0,
   totalAmount: 0,
@@ -15,21 +15,19 @@ export const cartSlice = createSlice({
       const existingIndex = state.cartItems.findIndex(
         (item) => item.id === action.payload.id
       );
-
       if (existingIndex >= 0) {
         state.cartItems[existingIndex] = {
           ...state.cartItems[existingIndex],
           cartQuantity: state.cartItems[existingIndex].cartQuantity + 1,
         };
       } else {
-        let tempProductItem = { ...action.payload, cartQuantity: 1 };
-        state.cartItems.push(tempProductItem);
-        console.log(state.cartItems);
+        let tempItem = { ...action.payload, cartQuantity: 1 };
+        state.cartItems.push(tempItem);
       }
-      localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
+      sessionStorage.setItem("cartItems", JSON.stringify(state.cartItems));
     },
     decreaseCart(state, action) {
-        const itemIndex = state.cartItems.findIndex(
+      const itemIndex = state.cartItems.findIndex(
         (item) => item.id === action.payload.id
       );
 
@@ -42,9 +40,7 @@ export const cartSlice = createSlice({
         state.cartItems = nextCartItems;
       }
 
-      localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
-
-
+      sessionStorage.setItem("cartItems", JSON.stringify(state.cartItems));
     },
     removeCartItem(state, action) {
       state.cartItems.map((cartItem) => {
@@ -55,7 +51,7 @@ export const cartSlice = createSlice({
 
           state.cartItems = nextCartItems;
         }
-        localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
+        sessionStorage.setItem("cartItems", JSON.stringify(state.cartItems));
         return state;
       });
     },
@@ -76,12 +72,12 @@ export const cartSlice = createSlice({
         }
       );
       total: parseFloat(total.toFixed(2));
-      state.cartTotalQuantity = quantity;
-      state.cartTotalAmount = total;
+      state.cartQuantity = quantity;
+      state.totalAmount = total;
     },
     clearCart(state, action) {
       state.cartItems = [];
-      localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
+      sessionStorage.setItem("cartItems", JSON.stringify(state.cartItems));
     },
   },
 });

@@ -39,13 +39,13 @@ function Header() {
               <Link to="/aboutus">About US</Link>
             </li>
             <li className="nav-list">
-              <Link to="/contacts">Contact US</Link>
+              <Link to="/contactus">contact US</Link>
             </li>
             <li className="nav-list">
-              <Link to="/products">Products</Link>
+              <Link to="/addproduct">Add Product</Link>
             </li>
             <li className="nav-list">
-              <Link to="/">LOG&PRoDU*CTs</Link>
+              <Link to="/">Products</Link>
             </li>
           </ul>
         </nav>

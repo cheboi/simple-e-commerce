@@ -20,16 +20,13 @@ body {
   text-align: center;
 }
 .form-control {
-  position: relative;
   width: 80%;
   max-width: 450px;
   margin: 0 auto;
 }
 form {
-  position: relative;
   width: 100%;
-  margin: 50px auto;
-  padding: 50px;
+  padding: 5px;
   background: white;
   text-align: center;
   height: 60%;
@@ -81,6 +78,6 @@ h3 {
   margin-top: 0;
   margin-bottom: 20px;
   text-transform: uppercase;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 700;
 }

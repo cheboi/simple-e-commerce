@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addNewProduct } from "../features/productSlice";
 
-import "./styles/productsForm.css";
+import "../components/styles/productsForm.css";
 
 const AddProductForm = () => {
   const dispatch = useDispatch();
@@ -71,7 +71,7 @@ const AddProductForm = () => {
           placeholder="Description"
         />
         <input
-          type="file"
+          type="text"
           id="productImage"
           name="productImage"
           value={image}

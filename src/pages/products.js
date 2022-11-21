@@ -1,9 +1,8 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-// import ProductsExcerpt from "./ProductsExcerpt";
-import AddProductForm from "./addProductForm";
+import { useNavigate } from 'react-router-dom';
 
-import "./styles/product.css";
+import "../components/styles/product.css";
 import {
   selectAllProducts,
   getProductsStatus,
@@ -18,6 +17,7 @@ const Products = () => {
   const products = useSelector(selectAllProducts);
   const productStatus = useSelector(getProductsStatus);
   const error = useSelector(getProductsError);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (productStatus === "idle") {
@@ -27,13 +27,10 @@ const Products = () => {
 
   const handleCartSubmit = (product) => {
     dispatch(addToCart(product));
-    // history.push("/cart");
+    navigate('/cart');
   };
 
-  // var arrayProduct = [];
-  // arrayProduct.push(product)
   let content;
-  // console.log(products);
 
   if (productStatus === "loading") {
     content = <p>Loading...</p>;
@@ -46,9 +43,9 @@ const Products = () => {
               <h1>{product?.title}</h1>
               <p className="description">{product?.description}</p>
               <h5>{product?.discountRate}</h5>
+              <span className="price">Kes {product?.price}</span>
               <div className="control">
                 <button className="btn">
-                  <span className="price">Kes {product?.price}</span>
                   <span
                     className="cart"
                     onClick={() => handleCartSubmit(product)}
@@ -74,7 +71,6 @@ const Products = () => {
   return (
     <section>
       <h2>Products</h2>
-      <AddProductForm />
       {content}
     </section>
   );

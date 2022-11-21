@@ -37,7 +37,6 @@ const Cart = () => {
 
   return (
     <div className="cart-container">
-      {/* <h2>Shopping Cart</h2> */}
       {cart.cartItems.length === 0 ? (
         <div className="cart-empty">
           <p>Your cart is currently empty</p>
@@ -55,27 +54,29 @@ const Cart = () => {
                 <div className="cart-item" key={cartItem.id}>
                   <div className="cart-product">
                     <img src={cartItem.image} alt={cartItem.title} />
-                    <div>
+                    <div className ="right-card">
                       <h3>{cartItem.title}</h3>
                       <p>{cartItem.description}</p>
+                      <p className="cart-product-price">
+                        Price in Ksh:{cartItem.price}
+                      </p>
+                      <div className="cart-product-quantity">
+                        <button onClick={() => handleDecreaseCart(cartItem)}>
+                          -
+                        </button>
+                        <div className="count">{cartItem.cartQuantity}</div>
+                        <button onClick={() => handleAddToCart(cartItem)}>
+                          +
+                        </button>
+                      </div>
+                      <div className="cart-product-total-price">
+                        Total Amount: ksh:{" "}
+                        {cartItem.price * cartItem.cartQuantity}
+                      </div>
                       <button onClick={() => handleRemoveFromCart(cartItem)}>
                         Remove
                       </button>
                     </div>
-                  </div>
-                  <div className="cart-product-price">
-                    {""}
-                    Price in Ksh:{cartItem.price}
-                  </div>
-                  <div className="cart-product-quantity">
-                    <button onClick={() => handleDecreaseCart(cartItem)}>
-                      -
-                    </button>
-                    <div className="count">{cartItem.cartQuantity}</div>
-                    <button onClick={() => handleAddToCart(cartItem)}>+</button>
-                  </div>
-                  <div className="cart-product-total-price">
-                    Total Amount: ksh: {cartItem.price * cartItem.cartQuantity}
                   </div>
                 </div>
               ))}
@@ -84,11 +85,9 @@ const Cart = () => {
             <button className="clear-btn" onClick={() => handleClearCart()}>
               Clear Cart
             </button>
-            <div className="cart-checkout">
-              <div className="subtotal">
-                <span>Subtotal </span>
-                <span className="amount">Ksh: {cart.cartTotalAmount}</span>
-              </div>
+            <div className="subtotal">
+              <span>Subtotal </span>
+              <span className="amount">Ksh: {cart.totalAmount}</span>
             </div>
           </div>
         </div>

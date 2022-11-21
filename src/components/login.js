@@ -76,12 +76,12 @@ function Login() {
     <div>
       <div className="login">
         <form>
-          <input
+          {/* <input
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Full name (required for registering)"
             type="text"
-          />
+          /> */}
           <input
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -99,12 +99,12 @@ function Login() {
           </button>
         </form>
 
-        <p>
+        {/* <p>
           Not a member?{" "}
           <span className="login__register" onClick={register}>
             Register Now
           </span>
-        </p>
+        </p> */}
       </div>
     </div>
   );
