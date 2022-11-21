@@ -33,7 +33,7 @@ const Cart = () => {
     dispatch(clearCart());
   };
 
-  console.log(cart);
+  // console.log(cart);
 
   return (
     <div className="cart-container">
@@ -49,8 +49,7 @@ const Cart = () => {
       ) : (
         <div className="items">
           <div className="cart-items">
-            {cart.cartItems &&
-              cart.cartItems.map((cartItem) => (
+            {cart.cartItems.map((cartItem) => (
                 <div className="cart-item" key={cartItem.id}>
                   <div className="cart-product">
                     <img src={cartItem.image} alt={cartItem.title} />

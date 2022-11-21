@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 import "../components/styles/product.css";
 import {
@@ -27,7 +27,7 @@ const Products = () => {
 
   const handleCartSubmit = (product) => {
     dispatch(addToCart(product));
-    navigate('/cart');
+    navigate("/cart");
   };
 
   let content;
@@ -48,7 +48,10 @@ const Products = () => {
                 <button className="btn">
                   <span
                     className="cart"
-                    onClick={() => handleCartSubmit(product)}
+                    onClick={() => {
+                      console.info(product);
+                      handleCartSubmit(product);
+                    }}
                   >
                     Add to Cart
                   </span>
