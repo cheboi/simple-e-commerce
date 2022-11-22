@@ -80,7 +80,7 @@ label:not(#nameLabel) {
   margin: 30px 35px;
   height: 40px;
   border: none;
-  background: #434753;
+  background: deepskyblue;
   color: #ffd6ba;
   cursor: pointer;
 }

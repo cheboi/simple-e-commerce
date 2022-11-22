@@ -1,30 +1,43 @@
-header {
-  background-color: rgb(255, 225, 255);
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(255, 255, 255);
+  padding: 2rem;
+  height: 50px;
+  box-shadow: 0 0 25px 0 black;
+  align-items: center;
   position: fixed;
-  left: 0;
   right: 0;
   top: 0px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  box-shadow: 0 0 25px 0 black;
-}
-header * {
-  display: inline;
-}
-.nav {
-  float: right;
-  width: 70%;
-  height: 100%;
-  margin: none;
+  width: 100%;
   text-decoration: none;
+}
+.my-logo {
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.nav-ul {
+  display: flex;
 }
 .nav-list {
-  margin: 20px;
-  float: right;
-  font-weight: bolder;
+  list-style: none;
+  margin: 0 0.75rem;
+  text-transform: uppercase;
 }
+
 .nav-list Link {
-  color: #fff;
   text-decoration: none;
+  color: inherit;
+}
+.nav-list button{
+  width: 80px;
+  height: 30px;
+  text-transform: uppercase;
+  background: deepskyblue;
+  color: #ffffff;
+  border-color: #fff;
+  border-radius: 5px;
+
 }
