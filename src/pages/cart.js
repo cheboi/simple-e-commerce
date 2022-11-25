@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -7,37 +7,50 @@ import {
   getTotals,
   clearCart,
   removeCartItem,
+  getCartItemsError,
+  addItemToCart,
+  selectAllCartItems,
+  getCartItemsStatus,
+  getCart,
+  deleteCart
 } from "../features/cartSlice";
 
 import "../components/styles/cart.css";
 
 const Cart = () => {
-  const cart = useSelector((state) => state.cart);
+  const cart = useSelector(selectAllCartItems);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getCart());
+  }, []);
 
   React.useEffect(() => {
     dispatch(getTotals());
   }, [cart, dispatch]);
 
-  const handleAddToCart = (product) => {
-    dispatch(addToCart(product));
+  const handleAddToCart = (cartProduct) => {
+    dispatch(addItemToCart(cartProduct));
   };
 
   const handleDecreaseCart = (product) => {
     dispatch(decreaseCart(product));
   };
   const handleRemoveFromCart = (product) => {
-    dispatch(removeCartItem(product));
+    dispatch(deleteCart(product));
   };
   const handleClearCart = () => {
     dispatch(clearCart());
   };
 
-  // console.log(cart);
+  const priceBeforeDiscount = (price) => {
+    // dispatch(priceBeforeDiscount)
+  };
 
+  // console.log(cart);
   return (
     <div className="cart-container">
-      {cart.cartItems.length === 0 ? (
+      {cart.length === 0 ? (
         <div className="cart-empty">
           <p>Your cart is currently empty</p>
           <div className="go-shop">
@@ -49,36 +62,36 @@ const Cart = () => {
       ) : (
         <div className="items">
           <div className="cart-items">
-            {cart.cartItems.map((cartItem) => (
-                <div className="cart-item" key={cartItem.id}>
-                  <div className="cart-product">
-                    <img src={cartItem.image} alt={cartItem.title} />
-                    <div className ="right-card">
-                      <h3>{cartItem.title}</h3>
-                      <p>{cartItem.description}</p>
-                      <p className="cart-product-price">
-                        Price in Ksh:{cartItem.price}
-                      </p>
-                      <div className="cart-product-quantity">
-                        <button onClick={() => handleDecreaseCart(cartItem)}>
-                          -
-                        </button>
-                        <div className="count">{cartItem.cartQuantity}</div>
-                        <button onClick={() => handleAddToCart(cartItem)}>
-                          +
-                        </button>
-                      </div>
-                      <div className="cart-product-total-price">
-                        Total Amount: ksh:{" "}
-                        {cartItem.price * cartItem.cartQuantity}
-                      </div>
-                      <button onClick={() => handleRemoveFromCart(cartItem)}>
-                        Remove
+            {cart.map((cartItem) => (
+              <div className="cart-item" key={cartItem.id}>
+                <div className="cart-product">
+                  <img src={cartItem.image} alt={cartItem.title} />
+                  <div className="right-card">
+                    <h3>{cartItem.title}</h3>
+                    <p>{cartItem.description}</p>
+                    <p className="cart-product-price">
+                      Price in Ksh:{cartItem.price}
+                    </p>
+                    <div className="cart-product-quantity">
+                      <button onClick={() => handleDecreaseCart(cartItem)}>
+                        -
+                      </button>
+                      <div className="count">{cartItem.cartQuantity}</div>
+                      <button onClick={() => handleAddToCart(cartItem)}>
+                        +
                       </button>
                     </div>
+                    <div className="cart-product-total-price">
+                      Total Amount: ksh:{" "}
+                      {cartItem.price * cartItem.cartQuantity}
+                    </div>
+                    <button onClick={() => handleRemoveFromCart(cartItem)}>
+                      Remove
+                    </button>
                   </div>
                 </div>
-              ))}
+              </div>
+            ))}
           </div>
           <div className="cart-summary">
             <button className="clear-btn" onClick={() => handleClearCart()}>

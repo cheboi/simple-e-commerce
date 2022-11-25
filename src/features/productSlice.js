@@ -77,7 +77,7 @@ export const productSlice = createSlice({
   },
 });
 
-export const { fetchProduct } = productSlice.actions;
+// export const { fetchProduct } = productSlice.actions;
 
 export const selectAllProducts = (state) => state.products.products;
 export const getProductsStatus = (state) => state.products.status;

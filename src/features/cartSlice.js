@@ -1,4 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+
+const URI = "https://simple-e-comerce-default-rtdb.firebaseio.com/cart.json";
 
 const initialState = {
   cartItems: sessionStorage.getItem("cartItems")
@@ -6,7 +9,89 @@ const initialState = {
     : [],
   cartQuantity: 0,
   totalAmount: 0,
+  status: "idle", //'idle' | 'loading' | 'succeeded' | 'failed'
+  error: null,
 };
+
+// export const addItemToCart = createAsyncThunk(
+//   "cart/addNewItemToCart",
+//   async (initialProduct) => {
+//     const response = await axios.post(URI, initialProduct);
+//     return response.data;
+//   }
+// );
+
+//
+export const getCart = createAsyncThunk("cart/getCart", async () => {
+  const response = await axios.get(
+    "https://simple-e-comerce-default-rtdb.firebaseio.com/cart.json"
+  );
+
+  console.log("data " + response.data);
+
+  let ourdata = [];
+  console.log(response.data);
+  console.log("My Data" + response.data);
+  for (let key in response.data) {
+    ourdata.push({
+      id: key,
+      image: response.data[key].image,
+      description: response.data[key].body,
+      price: response.data[key].price,
+      product_id: response.data[key].id,
+      discountRate: response.data[key].discountRate,
+      title: response.data[key].title,
+    });
+  }
+
+  return ourdata;
+});
+
+export const updateCart = createAsyncThunk(
+  "cart/incrementCartQuantity",
+  async (product) => {
+    const response = await axios.put(
+      `https://simple-e-comerce-default-rtdb.firebaseio.com/cart/${product.id}.json`,
+      product.quantity
+    );
+  }
+);
+
+export const decreaseCartQuantity = createAsyncThunk(
+  "cart/decreaseCartQuantity",
+  async (product) => {
+    const response = await axios.put(
+      `https://simple-e-comerce-default-rtdb.firebaseio.com/cart/${product.id}.json`,
+      product.quantity
+    );
+  }
+);
+
+export const deleteCart = createAsyncThunk(
+  "products/deleteCart",
+  async (cart) => {
+    try {
+      const response = await axios.delete(
+        `https://simple-e-comerce-default-rtdb.firebaseio.com/cart/${cart.id}.json`
+      );
+      return response.status;
+    } catch (error) {}
+  }
+);
+
+export const addItemToCart = createAsyncThunk(
+  "cart/addToCart",
+  async (product) => {
+    try {
+      const response = axios.post(
+        `https://simple-e-comerce-default-rtdb.firebaseio.com/cart${product.id}/Products.json`,
+        product
+      );
+      getCart(product.id);
+      return response.message;
+    } catch (error) {}
+  }
+);
 export const cartSlice = createSlice({
   name: "cart",
   initialState,
@@ -80,8 +165,26 @@ export const cartSlice = createSlice({
       sessionStorage.setItem("cartItems", JSON.stringify(state.cartItems));
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getCart.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(getCart.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.cartItems = action.payload;
+      })
+      .addCase(getCart.rejected, (state, action) => {
+        state.status = "failed";
+        state.cartItems = action.payload.message.error;
+      });
+  },
 });
 
-export const { addToCart, decreaseCart, getTotals, clearCart, removeCartItem } =
+export const { addToCart, decreaseCart, getTotals, clearCart, removeCartItem,  } =
   cartSlice.actions;
+export const selectAllCartItems = (state) => state.cart?.cartItems;
+export const getCartItemsStatus = (state) => state.cart?.status;
+export const getCartItemsError = (state) => state.cart?.error;
+
 export default cartSlice.reducer;

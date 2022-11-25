@@ -9,7 +9,7 @@ import {
   getProductsError,
   fetchProducts,
 } from "../features/productSlice";
-import { addToCart } from "../features/cartSlice";
+import { addToCart,addItemToCart } from "../features/cartSlice";
 
 const Products = () => {
   const dispatch = useDispatch();
@@ -25,8 +25,8 @@ const Products = () => {
     }
   }, [products, dispatch]);
 
-  const handleCartSubmit = (product) => {
-    dispatch(addToCart(product));
+  const handleCartSubmit = (cartItem) => {
+    dispatch(addItemToCart(cartItem));
     navigate("/cart");
   };
 
@@ -38,7 +38,7 @@ const Products = () => {
     content = products.map((product) => {
       return (
         <article>
-          <div id="container">
+          <div id="container" key={product.id}>
             <div className="product-details">
               <h1>{product?.title}</h1>
               <p className="description">{product?.description}</p>
@@ -49,7 +49,7 @@ const Products = () => {
                   <span
                     className="cart"
                     onClick={() => {
-                      console.info(product);
+                      // console.info(product);
                       handleCartSubmit(product);
                     }}
                   >
