@@ -5,7 +5,7 @@ import {
 
 import axios from "axios";
 
-URL = "https://simple-e-comerce-default-rtdb.firebaseio.com/product.json";
+URL = "http://localhost:8080/products";
 const initialState = {
   products: [],
   status: "idle", //'idle' | 'loading' | 'succeeded' | 'failed'

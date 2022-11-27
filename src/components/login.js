@@ -1,111 +1,137 @@
 import React, { useState } from "react";
-import {
-  auth,
-  createUserWithEmailAndPassword,
-  updateProfile,
-  signInWithEmailAndPassword,
-} from "../service/firebase";
+import axios from "axios";
 import { useDispatch } from "react-redux";
 import { login } from "../features/userSlice";
 
 import "./styles/login.css";
 
 function Login() {
-  // use state constants for the the form inputs
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
+  const [useremailReg, setUseremailReg] = useState("");
+  const [userfirstname, setUserfirstname] = useState("");
+  const [userlastname, setUserlastname] = useState("");
+  const [usernameReg, setUsernameReg] = useState("");
+  const [passwordReg, setPasswordReg] = useState("");
+  const [useremailLog, setUseremailLog] = useState("");
+  const [passwordLog, setPasswordLog] = useState("");
 
-  const dispatch = useDispatch();
+  const [loginStatus, setLoginStatus] = useState("");
 
-  const loginToApp = (e) => {
-    e.preventDefault();
-
-    // Sign in an existing user with Firebase
-    signInWithEmailAndPassword(auth, email, password)
-      // returns  an auth object after a successful authentication
-      // userAuth.user contains all our user details
-      .then((userAuth) => {
-        // store the user's information in the redux state
-        dispatch(
-          login({
-            email: userAuth.user.email,
-            uid: userAuth.user.uid,
-            displayName: userAuth.user.displayName,
-          })
-        );
-      })
-      // display the error if any
-      .catch((err) => {
-        alert(err);
+  const register = async () => {
+    try {
+      const res = await axios({
+        method: "POST",
+        url: `http://localhost:3000/user/signup`,
+        data: {
+          email: useremailReg,
+          first_name: userfirstname,
+          last_name: userlastname,
+          username: usernameReg,
+          password: passwordReg,
+        },
       });
-  };
 
-  // A quick check on the name field to make it mandatory
-  const register = () => {
-    if (!name) {
-      return alert("Please enter a full name");
+      console.log(res.data);
+      if (res.data.status === "success") console.log("Register succesfully");
+    } catch (err) {
+      console.log(`⛔⛔⛔: ${err.response.data.message}`);
     }
-
-    console.log("register the user");
-
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userAuth) => {
-        updateProfile(userAuth.user, {
-          displayName: name,
-        })
-          .then(
-            dispatch(
-              login({
-                email: userAuth.user.email,
-                uid: userAuth.user.uid,
-                displayName: name,
-              })
-            )
-          )
-          .catch((error) => {
-            console.log("user not updated");
-          });
-      })
-      .catch((err) => {
-        alert(err);
-      });
   };
 
-  return (
-    <div>
-      <div className="login">
-        <form>
-          {/* <input
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Full name (required for registering)"
-            type="text"
-          /> */}
-          <input
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
-            type="email"
-          />
-          <input
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-            type="password"
-          />
-          <button className="login-btn" type="submit" onClick={loginToApp}>
-            Sign In
-          </button>
-        </form>
+  const login = async () => {
+    try {
+      // In the port of the server obviously
+      const res = await axios({
+        method: "POST",
+        url: "http://localhost:3000/user/login",
+        data: {
+          useremail: useremailLog,
+          password: passwordLog,
+        },
+      });
 
-        {/* <p>
-          Not a member?{" "}
-          <span className="login__register" onClick={register}>
-            Register Now
-          </span>
-        </p> */}
+      console.log(res.data);
+      if (res.data.status === "success") {
+        console.log("Logged succesfully!");
+        setLoginStatus(
+          `Logged succesfully! Welcome back ${res.data.data.username}`
+        );
+      }
+    } catch (err) {
+      console.log(`⛔⛔⛔: ${err.response.data.message}`);
+      setLoginStatus(err.response.data.message);
+    }
+  };
+
+  const handlerRegister = (e) => {
+    e.preventDefault();
+    register();
+    // setUsernameReg('');
+    // setPasswordReg('');
+  };
+
+  const handlerLogin = (e) => {
+    e.preventDefault();
+    login();
+  };
+  return (
+    <div className="App">
+      <div className="registration">
+        <h1>Registration</h1>
+        <form>
+        <label>Useremail</label>
+          <input
+            type="email"
+            onChange={(e) => setUseremailReg(e.target.value)}
+            value={useremailReg}
+          />
+          <label>Userfirstname</label>
+          <input
+            type="text"
+            onChange={(e) => setUserfirstname(e.target.value)}
+            value={userfirstname}
+          /><label>Userlastname</label>
+          <input
+            type="text"
+            onChange={(e) => setUserlastname(e.target.value)}
+            value={userlastname}
+          />
+          <label>Username</label>
+          <input
+            type="text"
+            onChange={(e) => setUsernameReg(e.target.value)}
+            value={usernameReg}
+          />
+          <label>Password</label>
+          <input
+            type="password"
+            onChange={(e) => setPasswordReg(e.target.value)}
+            value={passwordReg}
+          />
+          <button onClick={handlerRegister}>Register</button>
+        </form>
       </div>
+      <div className="login">
+        <h1>Login</h1>
+        <form>
+          <label>UserEmail</label>
+          <input
+            type="email"
+            placeholder="UserEmail..."
+            onChange={(e) => setUseremailLog(e.target.value)}
+            value={useremailLog}
+          />
+          <label>Password</label>
+          <input
+            type="password"
+            placeholder="Password..."
+            onChange={(e) => setPasswordLog(e.target.value)}
+            value={passwordLog}
+          />
+          <button onClick={handlerLogin}>Log in</button>
+        </form>
+      </div>
+
+      <h1>{loginStatus}</h1>
     </div>
   );
 }
