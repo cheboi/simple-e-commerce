@@ -37,10 +37,10 @@ const Main = () => {
     <div className="app">
       {/* <Header/> */}
 
-      {!user ? (
+      {/* {!user ? (
         // display the login form
         <Login />
-      ) : (
+      ) : ( */}
         <BrowserRouter>
           <Header />
           <Routes>
@@ -51,7 +51,7 @@ const Main = () => {
             <Route path="cart" element={<Cart />} />
           </Routes>
         </BrowserRouter>
-      )}
+      {/* )} */}
     </div>
   );
 };
