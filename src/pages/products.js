@@ -9,7 +9,7 @@ import {
   getProductsError,
   fetchProducts,
 } from "../features/productSlice";
-import { addToCart,addItemToCart } from "../features/cartSlice";
+import { addToCart, addItemToCart } from "../features/cartSlice";
 
 const Products = () => {
   const dispatch = useDispatch();
@@ -27,7 +27,8 @@ const Products = () => {
 
   const handleCartSubmit = (cartItem) => {
     dispatch(addItemToCart(cartItem));
-    navigate("/cart");
+    console.log(cartItem);
+    // navigate("/cart");
   };
 
   let content;
@@ -40,7 +41,7 @@ const Products = () => {
         <article>
           <div id="container" key={product.id}>
             <div className="product-details">
-              <h1>{product?.title}</h1>
+              <h1>{product?.name}</h1>
               <p className="description">{product?.description}</p>
               <h5>{product?.discountRate}</h5>
               <span className="price">Kes {product?.price}</span>
@@ -59,9 +60,9 @@ const Products = () => {
               </div>
             </div>
             <img
-              src={product?.image}
+              src={product?.imageUrl}
               className="product-image"
-              alt={product?.title}
+              alt={product?.name}
             />
           </div>
         </article>

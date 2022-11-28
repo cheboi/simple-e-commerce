@@ -43,11 +43,11 @@ const Cart = () => {
     dispatch(clearCart());
   };
 
-  const priceBeforeDiscount = (price) => {
-    // dispatch(priceBeforeDiscount)
-  };
+  // const priceBeforeDiscount = (price) => {
+  //   // dispatch(priceBeforeDiscount)
+  // };
 
-  // console.log(cart);
+  console.log("cart" + cart);
   return (
     <div className="cart-container">
       {cart.length === 0 ? (
@@ -65,9 +65,9 @@ const Cart = () => {
             {cart.map((cartItem) => (
               <div className="cart-item" key={cartItem.id}>
                 <div className="cart-product">
-                  <img src={cartItem.image} alt={cartItem.title} />
+                  <img src={cartItem.image} alt={cartItem.product_name} />
                   <div className="right-card">
-                    <h3>{cartItem.title}</h3>
+                    <h3>{cartItem.product_name}</h3>
                     <p>{cartItem.description}</p>
                     <p className="cart-product-price">
                       Price in Ksh:{cartItem.price}
@@ -76,14 +76,14 @@ const Cart = () => {
                       <button onClick={() => handleDecreaseCart(cartItem)}>
                         -
                       </button>
-                      <div className="count">{cartItem.cartQuantity}</div>
+                      <div className="count">{cartItem.quantity}</div>
                       <button onClick={() => handleAddToCart(cartItem)}>
                         +
                       </button>
                     </div>
                     <div className="cart-product-total-price">
                       Total Amount: ksh:{" "}
-                      {cartItem.price * cartItem.cartQuantity}
+                      {cartItem.price * cartItem.quantity}
                     </div>
                     <button onClick={() => handleRemoveFromCart(cartItem)}>
                       Remove

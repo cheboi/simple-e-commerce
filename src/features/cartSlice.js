@@ -1,8 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const URI = "https://simple-e-comerce-default-rtdb.firebaseio.com/cart.json";
-
 const initialState = {
   cartItems: sessionStorage.getItem("cartItems")
     ? JSON.parse(sessionStorage.getItem("cartItems"))
@@ -24,7 +22,7 @@ const initialState = {
 //
 export const getCart = createAsyncThunk("cart/getCart", async () => {
   const response = await axios.get(
-    "https://simple-e-comerce-default-rtdb.firebaseio.com/cart.json"
+    "http://localhost:8080/cart/cart"
   );
 
   console.log("data " + response.data);
@@ -38,7 +36,9 @@ export const getCart = createAsyncThunk("cart/getCart", async () => {
       image: response.data[key].image,
       description: response.data[key].body,
       price: response.data[key].price,
-      product_id: response.data[key].id,
+      product_id: response.data[key].product_id,
+      product_name: response.data[key].product_name,
+      quantity: response.data[key].quantity,
       discountRate: response.data[key].discountRate,
       title: response.data[key].title,
     });
@@ -51,7 +51,7 @@ export const updateCart = createAsyncThunk(
   "cart/incrementCartQuantity",
   async (product) => {
     const response = await axios.put(
-      `https://simple-e-comerce-default-rtdb.firebaseio.com/cart/${product.id}.json`,
+      `http://localhost:8080/cart/:${product.id}`,
       product.quantity
     );
   }
@@ -61,7 +61,7 @@ export const decreaseCartQuantity = createAsyncThunk(
   "cart/decreaseCartQuantity",
   async (product) => {
     const response = await axios.put(
-      `https://simple-e-comerce-default-rtdb.firebaseio.com/cart/${product.id}.json`,
+      `http://localhost:8080/cart/localhost:8080/cart/`,
       product.quantity
     );
   }
@@ -71,8 +71,8 @@ export const deleteCart = createAsyncThunk(
   "products/deleteCart",
   async (cart) => {
     try {
-      const response = await axios.delete(
-        `https://simple-e-comerce-default-rtdb.firebaseio.com/cart/${cart.id}.json`
+      const response = await axios.put(
+        `http://localhost:8080/cart/localhost:8080/cart/:id`
       );
       return response.status;
     } catch (error) {}
@@ -84,7 +84,7 @@ export const addItemToCart = createAsyncThunk(
   async (product) => {
     try {
       const response = axios.post(
-        `https://simple-e-comerce-default-rtdb.firebaseio.com/cart${product.id}/Products.json`,
+        `http://localhost:8080/cart/cart`,
         product
       );
       getCart(product.id);
@@ -100,6 +100,7 @@ export const cartSlice = createSlice({
       const existingIndex = state.cartItems.findIndex(
         (item) => item.id === action.payload.id
       );
+      console.log(existingIndex);
       if (existingIndex >= 0) {
         state.cartItems[existingIndex] = {
           ...state.cartItems[existingIndex],
@@ -109,7 +110,7 @@ export const cartSlice = createSlice({
         let tempItem = { ...action.payload, cartQuantity: 1 };
         state.cartItems.push(tempItem);
       }
-      sessionStorage.setItem("cartItems", JSON.stringify(state.cartItems));
+      addItemToCart();
     },
     decreaseCart(state, action) {
       const itemIndex = state.cartItems.findIndex(

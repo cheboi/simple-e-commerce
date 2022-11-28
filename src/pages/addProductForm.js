@@ -7,22 +7,22 @@ import "../components/styles/productsForm.css";
 const AddProductForm = () => {
   const dispatch = useDispatch();
 
-  const [title, setTitle] = useState("");
+  const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [image, setImage] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
   const [price, setPrice] = useState();
   const [discountRate, setDiscountRate] = useState("");
 
   const [addRequestStatus, setAddRequestStatus] = useState("idle");
 
-  const onTitleChanged = (e) => setTitle(e.target.value);
+  const onNameChanged = (e) => setName(e.target.value);
   const onDescriptionChanged = (e) => setDescription(e.target.value);
   const onPriceChanged = (e) => setPrice(e.target.value);
   const onDiscountChanged = (e) => setDiscountRate(e.target.value);
-  const onImageChanged = (e) => setImage(e.target.value);
+  const onImageChanged = (e) => setImageUrl(e.target.value);
 
   const canSave =
-    [title, description, price, image, discountRate].every(Boolean) &&
+    [name, description, price, imageUrl, discountRate].every(Boolean) &&
     addRequestStatus === "idle";
 
   const onSaveProductClicked = () => {
@@ -31,17 +31,17 @@ const AddProductForm = () => {
         setAddRequestStatus("pending");
         dispatch(
           addNewProduct({
-            title,
+            name,
             price,
-            image,
+            imageUrl,
             discountRate,
-            body: description,
+            description,
           })
         ).unwrap();
 
-        setTitle("");
+        setName("");
         setDescription("");
-        setImage("");
+        setImageUrl("");
         setPrice("");
         setDiscountRate("");
       } catch (err) {
@@ -57,11 +57,11 @@ const AddProductForm = () => {
         <h3>Add a New Product</h3>
         <input
           type="text"
-          id="productTitle"
-          name="productTitle"
-          value={title}
-          onChange={onTitleChanged}
-          placeholder="Product Title"
+          id="productName"
+          name="productName"
+          value={name}
+          onChange={onNameChanged}
+          placeholder="Product Name"
         />
         <textarea
           id="productDesription"
@@ -72,11 +72,11 @@ const AddProductForm = () => {
         />
         <input
           type="text"
-          id="productImage"
-          name="productImage"
-          value={image}
+          id="productImageUrl"
+          name="productImageUrl"
+          value={imageUrl}
           onChange={onImageChanged}
-          placeholder="Product Image"
+          placeholder="Product Image url"
         />
         <input
           type="text"
