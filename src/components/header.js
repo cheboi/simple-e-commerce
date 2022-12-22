@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet, Link } from "react-router-dom";
-import { auth } from "../service/firebase";
-import { logout, selectUser } from "../features/userSlice";
+// import { auth } from "../service/firebase";
+import { logout} from "../features/authSlice";
 import { BsFillCartCheckFill } from "react-icons/bs";
 
 import "./styles/header.css";
@@ -14,16 +14,15 @@ function Header() {
     // dispatch to the store with the logout action
     dispatch(logout());
     // sign out function from firebase
-    auth.signOut();
+    // auth.signOut();
   };
 
-  const user = useSelector(selectUser);
 
   return (
     <nav className="nav">
-       <h1 className="my-logo">
-          <Link to="/">Products</Link>
-        </h1>
+      <h1 className="my-logo">
+        <Link to="/">Products</Link>
+      </h1>
       <ul className="nav-ul">
         <li className="nav-list">
           <Link to="/addproduct">Add Product</Link>
@@ -35,6 +34,9 @@ function Header() {
           <Link to="/contactus">contact US</Link>
         </li>
         <li className="nav-list">
+          <Link to="/login">Login</Link>
+        </li>
+        <li className="nav-list">
           <Link to="/cart">
             <BsFillCartCheckFill />
             <span className="bag-quantity">
@@ -42,9 +44,10 @@ function Header() {
             </span>
           </Link>
         </li>
-        <li className="nav-list">
+        
+        {/* <li className="nav-list">
           {user ? <button onClick={logoutOfApp}>Logout</button> : ""}
-        </li>
+        </li> */}
       </ul>
       <Outlet />
     </nav>

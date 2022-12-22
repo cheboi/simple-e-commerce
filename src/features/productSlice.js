@@ -5,7 +5,7 @@ import {
 
 import axios from "axios";
 
-URL = "https://simple-e-comerce-default-rtdb.firebaseio.com/product.json";
+URL = "http://localhost:8080/products";
 const initialState = {
   products: [],
   status: "idle", //'idle' | 'loading' | 'succeeded' | 'failed'
@@ -20,11 +20,11 @@ export const fetchProducts = createAsyncThunk(
     for (let key in response.data) {
       ourdata.push({
         id:key,
-        image: response.data[key].image,
-        description: response.data[key].body,
+        imageUrl: response.data[key].imageUrl,
+        description: response.data[key].description,
         price: response.data[key].price,
         discountRate: response.data[key].discountRate,
-        title: response.data[key].title,
+        name: response.data[key].name,
       });
     }
     console.log(ourdata);
@@ -77,7 +77,7 @@ export const productSlice = createSlice({
   },
 });
 
-export const { fetchProduct } = productSlice.actions;
+// export const { fetchProduct } = productSlice.actions;
 
 export const selectAllProducts = (state) => state.products.products;
 export const getProductsStatus = (state) => state.products.status;
