@@ -1,139 +1,114 @@
-import React, { useState } from "react";
-import axios from "axios";
-import { useDispatch } from "react-redux";
-import { login } from "../features/userSlice";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate, useNavigate } from "react-router-dom";
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import * as Yup from "yup";
 
-import "./styles/login.css";
+import { login } from "../features/authSlice";
+import { clearMessage } from "../features/message";
 
-function Login() {
-  const [useremailReg, setUseremailReg] = useState("");
-  const [userfirstname, setUserfirstname] = useState("");
-  const [userlastname, setUserlastname] = useState("");
-  const [usernameReg, setUsernameReg] = useState("");
-  const [passwordReg, setPasswordReg] = useState("");
-  const [useremailLog, setUseremailLog] = useState("");
-  const [passwordLog, setPasswordLog] = useState("");
+const Login = () => {
+  let navigate = useNavigate();
 
-  const [loginStatus, setLoginStatus] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const register = async () => {
-    try {
-      const res = await axios({
-        method: "POST",
-        url: `http://localhost:3000/user/signup`,
-        data: {
-          email: useremailReg,
-          first_name: userfirstname,
-          last_name: userlastname,
-          username: usernameReg,
-          password: passwordReg,
-        },
+  const { isLoggedIn } = useSelector((state) => state.auth);
+  const { message } = useSelector((state) => state.message);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(clearMessage());
+  }, [dispatch]);
+
+  const initialValues = {
+    username: "",
+    password: "",
+  };
+
+  const validationSchema = Yup.object().shape({
+    username: Yup.string().required("This field is required!"),
+    password: Yup.string().required("This field is required!"),
+  });
+
+  const handleLogin = (formValue) => {
+    const { username, password } = formValue;
+    setLoading(true);
+
+    dispatch(login({ username, password }))
+      .unwrap()
+      .then(() => {
+        navigate("/profile");
+        window.location.reload();
+      })
+      .catch(() => {
+        setLoading(false);
       });
-
-      console.log(res.data);
-      if (res.data.status === "success") console.log("Register succesfully");
-    } catch (err) {
-      console.log(`⛔⛔⛔: ${err.response.data.message}`);
-    }
   };
 
-  const login = async () => {
-    try {
-      // In the port of the server obviously
-      const res = await axios({
-        method: "POST",
-        url: "http://localhost:3000/user/login",
-        data: {
-          useremail: useremailLog,
-          password: passwordLog,
-        },
-      });
+  if (isLoggedIn) {
+    return <Navigate to="/profile" />;
+  }
 
-      console.log(res.data);
-      if (res.data.status === "success") {
-        console.log("Logged succesfully!");
-        setLoginStatus(
-          `Logged succesfully! Welcome back ${res.data.data.username}`
-        );
-      }
-    } catch (err) {
-      console.log(`⛔⛔⛔: ${err.response.data.message}`);
-      setLoginStatus(err.response.data.message);
-    }
-  };
-
-  const handlerRegister = (e) => {
-    e.preventDefault();
-    register();
-    // setUsernameReg('');
-    // setPasswordReg('');
-  };
-
-  const handlerLogin = (e) => {
-    e.preventDefault();
-    login();
-  };
   return (
-    <div className="App">
-      <div className="registration">
-        <h1>Registration</h1>
-        <form>
-        <label>Useremail</label>
-          <input
-            type="email"
-            onChange={(e) => setUseremailReg(e.target.value)}
-            value={useremailReg}
-          />
-          <label>Userfirstname</label>
-          <input
-            type="text"
-            onChange={(e) => setUserfirstname(e.target.value)}
-            value={userfirstname}
-          /><label>Userlastname</label>
-          <input
-            type="text"
-            onChange={(e) => setUserlastname(e.target.value)}
-            value={userlastname}
-          />
-          <label>Username</label>
-          <input
-            type="text"
-            onChange={(e) => setUsernameReg(e.target.value)}
-            value={usernameReg}
-          />
-          <label>Password</label>
-          <input
-            type="password"
-            onChange={(e) => setPasswordReg(e.target.value)}
-            value={passwordReg}
-          />
-          <button onClick={handlerRegister}>Register</button>
-        </form>
-      </div>
-      <div className="login">
-        <h1>Login</h1>
-        <form>
-          <label>UserEmail</label>
-          <input
-            type="email"
-            placeholder="UserEmail..."
-            onChange={(e) => setUseremailLog(e.target.value)}
-            value={useremailLog}
-          />
-          <label>Password</label>
-          <input
-            type="password"
-            placeholder="Password..."
-            onChange={(e) => setPasswordLog(e.target.value)}
-            value={passwordLog}
-          />
-          <button onClick={handlerLogin}>Log in</button>
-        </form>
+    <div className="col-md-12 login-form">
+      <div className="card card-container">
+        <img
+          src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
+          alt="profile-img"
+          className="profile-img-card"
+        />
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={handleLogin}
+        >
+          <Form>
+            <div className="form-group">
+              <label htmlFor="username">Username</label>
+              <Field name="username" type="text" className="form-control" />
+              <ErrorMessage
+                name="username"
+                component="div"
+                className="alert alert-danger"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="password">Password</label>
+              <Field name="password" type="password" className="form-control" />
+              <ErrorMessage
+                name="password"
+                component="div"
+                className="alert alert-danger"
+              />
+            </div>
+
+            <div className="form-group">
+              <button
+                type="submit"
+                className="btn btn-primary btn-block"
+                disabled={loading}
+              >
+                {loading && (
+                  <span className="spinner-border spinner-border-sm"></span>
+                )}
+                <span>Login</span>
+              </button>
+            </div>
+          </Form>
+        </Formik>
       </div>
 
-      <h1>{loginStatus}</h1>
+      {message && (
+        <div className="form-group">
+          <div className="alert alert-danger" role="alert">
+            {message}
+          </div>
+        </div>
+      )}
     </div>
   );
-}
+};
 
 export default Login;

@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import UserService from "../services/user.service";
 
 import "../components/styles/product.css";
 import {
@@ -18,6 +19,7 @@ const Products = () => {
   const productStatus = useSelector(getProductsStatus);
   const error = useSelector(getProductsError);
   const navigate = useNavigate();
+  const [content, setContent] = useState("");
 
   useEffect(() => {
     if (productStatus === "idle") {
@@ -25,18 +27,34 @@ const Products = () => {
     }
   }, [products, dispatch]);
 
+  useEffect(() => {
+    UserService.getPublicContent().then(
+      (response) => {
+        setContent(response.data);
+      },
+      (error) => {
+        const _content =
+          (error.response && error.response.data) ||
+          error.message ||
+          error.toString();
+
+        setContent(_content);
+      }
+    );
+  }, []);
+
   const handleCartSubmit = (cartItem) => {
     dispatch(addItemToCart(cartItem));
     console.log(cartItem);
     // navigate("/cart");
   };
 
-  let content;
+  let content2;
 
   if (productStatus === "loading") {
-    content = <p>Loading...</p>;
+    content2 = <p>Loading...</p>;
   } else if (productStatus === "succeeded") {
-    content = products.map((product) => {
+    content2 = products.map((product) => {
       return (
         <article>
           <div id="container" key={product.id}>
@@ -50,7 +68,6 @@ const Products = () => {
                   <span
                     className="cart"
                     onClick={() => {
-                      // console.info(product);
                       handleCartSubmit(product);
                     }}
                   >
@@ -69,13 +86,13 @@ const Products = () => {
       );
     });
   } else if (productStatus === "failed") {
-    content = <p>Error : {error}</p>;
+    content2 = <p>Error : {error}</p>;
   }
 
   return (
     <section>
       <h2>Products</h2>
-      {content}
+      {content2}
     </section>
   );
 };
